@@ -1,5 +1,12 @@
-console.log('hello world!');
+const express = require("express");
 
-// Prepare code here to acces api elements to mainpulate data.
+const app = express();
+const port = 3400;
 
-// Need to setup database tables on computer to access the DB here.
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
+});
