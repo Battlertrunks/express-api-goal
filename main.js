@@ -1,7 +1,8 @@
-const Pool = require('pg').Pool;
-const express = require("express");
+import pg from 'pg';
+import express from "express";
+import { bookingSummary } from './modules/bookingSummary.js';
 
-const pool = new Pool({
+const pool = new pg.Pool({
   host: 'localhost',
   database: 'demo',
   port: 5432,
@@ -21,6 +22,16 @@ app.get('/', async (req, res) => {
       throw new Error(error.message);
     }
   });
+});
+
+app.get('/booking-info', async (req, res) => {
+  try {
+    bookingSummary();
+
+    res.status(200);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 });
 
 app.listen(port, () => {
