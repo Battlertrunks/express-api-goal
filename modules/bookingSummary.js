@@ -10,5 +10,3 @@ const bookingSummary = async () => {
 };
 
 export { bookingSummary };
-
-// booking_ref

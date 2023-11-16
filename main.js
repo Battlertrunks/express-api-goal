@@ -1,6 +1,7 @@
 import pg from 'pg';
 import express from "express";
 import { bookingSummary } from './modules/bookingSummary.js';
+import { generateTicket } from './modules/generateTicket.js';
 
 const pool = new pg.Pool({
   host: 'localhost',
@@ -12,6 +13,7 @@ const pool = new pg.Pool({
 });
 
 const app = express();
+app.use(express.json());
 const port = 3400;
 
 app.get('/', async (req, res) => {
@@ -26,9 +28,20 @@ app.get('/', async (req, res) => {
 
 app.get('/booking-info', async (req, res) => {
   try {
-    bookingSummary();
+    await bookingSummary();
 
     res.status(200);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+app.post('/new-ticket', async (req, res) => {
+  try {
+    console.log(req.body);
+    const createdRoute = await generateTicket(req.body);
+
+    res.status(201).send(createdRoute);
   } catch (error) {
     throw new Error(error.message);
   }
