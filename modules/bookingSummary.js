@@ -4,6 +4,7 @@ const bookingSummary = async () => {
   try {
     const result = await pool.query('SELECT * FROM tickets JOIN bookings ON tickets.book_ref = bookings.book_ref;');
     console.log(result);
+    return;
   } catch (error) {
     throw new Error(error.message);
   }

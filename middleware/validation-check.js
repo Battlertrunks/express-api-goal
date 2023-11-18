@@ -3,9 +3,10 @@ const jsonFormatValidator = (req, res, next) => {
     if (typeof req.body.ticket_no !== 'string') {
       throw new Error('ticket_no is not a string');
     }
-    return;
+    console.log('runs!')
+    return next();
   } catch (error) {
-    res.status(400).send(error.message);
+    error.status = 400;
     return next(error);
   }
 }

@@ -20,7 +20,8 @@ const port = 3400;
 app.get('/', async (req, res) => {
   await pool.query('SELECT * FROM aircrafts', (error, results) => {
     try {
-      res.status(200).json(results.rows);
+      console.log('hi');
+      return res.status(200).json(results.rows);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -30,8 +31,8 @@ app.get('/', async (req, res) => {
 app.get('/booking-info', async (req, res) => {
   try {
     await bookingSummary();
-
-    res.status(200);
+    console.log('end');
+    return res.sendStatus(200);
   } catch (error) {
     throw new Error(error.message);
   }
@@ -40,13 +41,13 @@ app.get('/booking-info', async (req, res) => {
 app.use('/new-ticket', jsonFormatValidator);
 app.post('/new-ticket', async (req, res, next) => {
   try {
-    next();
     console.log(req.body);
     const createdRoute = await generateTicket(req.body);
-
-    res.status(201).send(createdRoute);
+    console.log('hits here')
+    return res.status(201).send(createdRoute);
   } catch (error) {
-    res.status(400).send(error.message);
+    console.log('wat is sent?');
+    return res.status(error.status || 400).send(error.message);
   }
 });
 
