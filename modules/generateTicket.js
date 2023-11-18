@@ -4,7 +4,7 @@ const generateTicket = async (body) => {
   try {
     const {
       ticket_no,
-      booking_ref,
+      book_ref,
       passenger_id,
       passenger_name,
       contact_data
@@ -16,16 +16,16 @@ const generateTicket = async (body) => {
     if (!results.find((result) => result.ticket_no === body.ticket_no)) {
       const text = `INSERT INTO tickets(
         ticket_no,
-        booking_ref,
+        book_ref,
         passenger_id,
         passenger_name,
         contact_data
-        ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *
+        ) VALUES($1, $2, $3, $4, $5) RETURNING *
         `;
 
         const values = [
           ticket_no,
-          booking_ref,
+          book_ref,
           passenger_id,
           passenger_name,
           contact_data,

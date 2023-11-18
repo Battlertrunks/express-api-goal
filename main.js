@@ -2,6 +2,7 @@ import pg from 'pg';
 import express from "express";
 import { bookingSummary } from './modules/bookingSummary.js';
 import { generateTicket } from './modules/generateTicket.js';
+import { jsonFormatValidator } from './middleware/validation-check.js';
 
 const pool = new pg.Pool({
   host: 'localhost',
@@ -36,14 +37,16 @@ app.get('/booking-info', async (req, res) => {
   }
 });
 
-app.post('/new-ticket', async (req, res) => {
+app.use('/new-ticket', jsonFormatValidator);
+app.post('/new-ticket', async (req, res, next) => {
   try {
+    next();
     console.log(req.body);
     const createdRoute = await generateTicket(req.body);
 
     res.status(201).send(createdRoute);
   } catch (error) {
-    throw new Error(error.message);
+    res.status(400).send(error.message);
   }
 });
 
