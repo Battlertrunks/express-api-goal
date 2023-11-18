@@ -23,8 +23,9 @@ const generateTicket = async (body) => {
 
     console.log('passes');
 
-    const results = (await pool.query(`SELECT * FROM tickets;`)).rows;
-    if (!results.find((result) => result.ticket_no === body.ticket_no)) {
+    // This should be refecto
+    const results = (await pool.query(`SELECT * FROM tickets WHERE ticket_no = $1;`, [ticket_no])).rows;
+    if (!results.length) {
       const text = `INSERT INTO tickets(
         ticket_no,
         book_ref,
@@ -43,9 +44,11 @@ const generateTicket = async (body) => {
         ];
 
         response = await pool.query(text, values);
+        console.log('sends?')
+        return response;
+    } else {
+      throw new Error('Ticket entry already exists.');
     }
-    console.log('sends?')
-    return response;
   } catch (error) {
     throw new Error(error.message);
   }
